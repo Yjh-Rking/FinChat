@@ -1,0 +1,4 @@
+# Ignore Project-specific files and folders
+.env
+logs/*
+data/*
