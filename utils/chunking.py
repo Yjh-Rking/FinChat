@@ -1,5 +1,11 @@
 import tiktoken
+from langchain_community.document_loaders import DirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+
+def load_markdown(path):
+    loader = DirectoryLoader(path, glob="**/*.md")
+    return loader.load()
 
 
 def tiktoken_len(text):
@@ -15,3 +21,8 @@ def get_splitter():
         length_function=tiktoken_len,
         separators=["\n\n", "\n", "。", " ", ""],
     )
+
+
+def split_docs(docs):
+    splitter = get_splitter()
+    return splitter.split_documents(docs)

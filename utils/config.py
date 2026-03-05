@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Literal
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 
 class LoggingSettings(BaseSettings):
@@ -90,6 +91,17 @@ class ChatSettings(BaseSettings):
     model: str = "chat_model"
 
 
+class SQLiteSettings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        env_prefix="sqlite_",
+        extra="ignore",
+        case_sensitive=False,
+    )
+    path: str = "data/rag.db"
+
+
 class QdrantSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -101,15 +113,28 @@ class QdrantSettings(BaseSettings):
     host: str = "qdrant_host"
     port: int = 6333
     collection_name: str = "research_collection"
+    path: str = "data/qdrant.db"
 
 
 class Config(BaseModel):
     # Settings
     embed: EmbedSettings = EmbedSettings()
     chat: ChatSettings = ChatSettings()
+    sqlite: SQLiteSettings = SQLiteSettings()
     qdrant: QdrantSettings = QdrantSettings()
     log: LoggingSettings = LoggingSettings()
 
 
 config = Config()
 config.log.setup_logging()
+EMBED_MODEL = OpenAIEmbeddings(
+    api_key=config.embed.token,  # type: ignore
+    base_url="https://api.siliconflow.cn/v1/",
+    model=config.embed.model,
+)
+CHAT_MODEL = ChatOpenAI(
+    api_key=config.chat.token,  # type: ignore
+    base_url=config.chat.url,
+    model=config.chat.model,
+    temperature=0,
+)
