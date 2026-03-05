@@ -14,15 +14,15 @@ def tiktoken_len(text):
     return len(tokens)
 
 
-def get_splitter():
+def get_splitter(chunk_size, chunk_overlap):
     return RecursiveCharacterTextSplitter(
-        chunk_size=512,
-        chunk_overlap=64,
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
         length_function=tiktoken_len,
         separators=["\n\n", "\n", "。", " ", ""],
     )
 
 
-def split_docs(docs):
-    splitter = get_splitter()
+def split_docs(chunk_size, chunk_overlap, docs):
+    splitter = get_splitter(chunk_size, chunk_overlap)
     return splitter.split_documents(docs)

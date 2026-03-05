@@ -1,7 +1,19 @@
 import logging
 from qdrant_client import models
+from langchain_qdrant import QdrantVectorStore
 
 logger = logging.getLogger(__name__)
+
+
+def get_vector_store(client, collection_name, vector_size, embedding):
+    if not client.collection_exists(collection_name):
+        create_collection(client, collection_name, vector_size=vector_size)
+    vector_store = QdrantVectorStore(
+        client=client,
+        collection_name=collection_name,
+        embedding=embedding,
+    )
+    return vector_store
 
 
 def create_collection(client, collection_name="text_collection", vector_size=1024):

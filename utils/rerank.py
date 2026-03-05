@@ -1,6 +1,9 @@
 import re
+import logging
 from utils.config import CHAT_MODEL
 from langchain_core.messages import HumanMessage, SystemMessage
+
+logger = logging.getLogger(__name__)
 
 
 def extract_score(text, default=0.0):
@@ -28,18 +31,18 @@ def llm_cross_encoder_rerank(query, docs, topk):
                         "例如：8.5"
                     )
                 ),
-                HumanMessage(content=f"问题：{query}\n\n文档: {doc}"),
+                HumanMessage(content=f"问题：{query}\n\n文档: {doc.page_content}"),
             ]
         )
         try:
             score = extract_score(resp.content)
         except ValueError:
-            print(f"无法解析分数: '{resp.content}'")
+            logger.info(f"无法解析分数: '{resp.content}'")
             score = 0.0
         scores.append(score)
 
     # 按分数从高到低排序
     sorted_docs_scores = sorted(zip(docs, scores), key=lambda x: x[1], reverse=True)
 
-    # 返回 topk
-    return sorted_docs_scores[:topk]
+    # 返回 docs
+    return [doc for doc, score in sorted_docs_scores[:topk]]

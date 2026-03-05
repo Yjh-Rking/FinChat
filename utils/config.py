@@ -65,6 +65,17 @@ class LoggingSettings(BaseSettings):
         logging.config.dictConfig(log_config)
 
 
+class DataSettings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        env_prefix="data_",
+        extra="ignore",
+        case_sensitive=False,
+    )
+    path: str = "data/md/"
+
+
 class EmbedSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -123,6 +134,7 @@ class Config(BaseModel):
     sqlite: SQLiteSettings = SQLiteSettings()
     qdrant: QdrantSettings = QdrantSettings()
     log: LoggingSettings = LoggingSettings()
+    data: DataSettings = DataSettings()
 
 
 config = Config()
