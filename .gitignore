@@ -2,3 +2,14 @@
 .env
 logs/*
 data/*
+# ignore pyc
+__pycache__/*
+*.pyc
+# ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+# ignore virtual environment folders
+venv/
+env/
+# ignore IDE-specific files
+.vscode/
+.idea/
