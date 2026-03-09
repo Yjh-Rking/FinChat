@@ -629,10 +629,6 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "jieba" },
-    { name = "langchain" },
-    { name = "langchain-community" },
-    { name = "langchain-qdrant" },
-    { name = "langchain-tavily" },
     { name = "langchain-text-splitters" },
     { name = "openai" },
     { name = "pydantic-settings" },
@@ -651,10 +647,6 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "jieba", specifier = ">=0.42.1" },
-    { name = "langchain", specifier = ">=1.2.10" },
-    { name = "langchain-community", specifier = ">=0.4.1" },
-    { name = "langchain-qdrant", specifier = ">=1.1.0" },
-    { name = "langchain-tavily", specifier = ">=0.2.17" },
     { name = "langchain-text-splitters", specifier = ">=1.1.1" },
     { name = "openai", specifier = ">=2.24.0" },
     { name = "pydantic-settings", specifier = ">=2.13.1" },
@@ -1243,35 +1235,6 @@ dependencies = [
 sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/d6/0f/01147f842499338ae3b0dd0a351fb83006d9ed623cf3a999bd68ba5bbe2d/langchain_openai-1.1.10.tar.gz", hash = "sha256:ca6fae7cf19425acc81814efed59c7d205ec9a1f284fd1d08aae9bda85d6501b", size = 1059755, upload-time = "2026-02-17T18:03:44.506Z" }
 wheels = [
     { url = "https://pypi.tuna.tsinghua.edu.cn/packages/72/17/3785cbcdc81c451179247e4176d2697879cb4f45ab2c59d949ca574e072d/langchain_openai-1.1.10-py3-none-any.whl", hash = "sha256:d91b2c09e9fbc70f7af45345d3aa477744962d41c73a029beb46b4f83b824827", size = 87205, upload-time = "2026-02-17T18:03:43.502Z" },
-]
-
-[[package]]
-name = "langchain-qdrant"
-version = "1.1.0"
-source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple/" }
-dependencies = [
-    { name = "langchain-core" },
-    { name = "pydantic" },
-    { name = "qdrant-client" },
-]
-sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/77/66/fb1c4e2801e55d92dea71d9a7f948574a322a1f5adc7913231023827f79f/langchain_qdrant-1.1.0.tar.gz", hash = "sha256:433236845736f973543ac6b7137f9d7fa511b7539373fbc6565c581d3ba59373", size = 195565, upload-time = "2025-10-22T17:27:15.157Z" }
-wheels = [
-    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/62/7e/d951082cb13e923508ba1eee4f48e7d511efc991c6506af567334654a3f3/langchain_qdrant-1.1.0-py3-none-any.whl", hash = "sha256:546c5c9aa57f543dbcee07343f730c331e4ec2af2ec55b541010af08d872bf35", size = 24254, upload-time = "2025-10-22T17:27:14.065Z" },
-]
-
-[[package]]
-name = "langchain-tavily"
-version = "0.2.17"
-source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple/" }
-dependencies = [
-    { name = "aiohttp" },
-    { name = "langchain" },
-    { name = "langchain-core" },
-    { name = "requests" },
-]
-sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/e6/32/f7b5487efbcd5fca5d4095f03dce7dcf0301ed81b2505d9888427c03619b/langchain_tavily-0.2.17.tar.gz", hash = "sha256:738abd790c50f19565023ad279c8e47e87e1aeb971797fec30a614b418ae6503", size = 25298, upload-time = "2026-01-18T13:09:04.112Z" }
-wheels = [
-    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/35/f9/bb6f1cea2a19215e4169a3bcec3af707ff947cf62f6ef7d28e7280f03e29/langchain_tavily-0.2.17-py3-none-any.whl", hash = "sha256:da4e5e7e328d054dc70a9c934afa1d1e62038612106647ff81ad8bfbe3622256", size = 30734, upload-time = "2026-01-18T13:09:03.1Z" },
 ]
 
 [[package]]
