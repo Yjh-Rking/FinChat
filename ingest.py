@@ -1,7 +1,8 @@
 import logging
 from qdrant_client import models
 from models import load_markdown, QdrantStore, SQLiteStore
-from utils import config, split_text, query_embedding
+from config import config, EMBED_MODEL
+from utils import split_text
 
 logger = logging.getLogger(__name__)
 
@@ -27,5 +28,5 @@ if __name__ == "__main__":
     )
     qdrant_store.init_collection(vector_size=1024, distance=models.Distance.COSINE)
     texts = [c.text for c in chunks]
-    embeddings = [query_embedding(text) for text in texts]
+    embeddings = [EMBED_MODEL(text) for text in texts]
     qdrant_store.upsert_chunks(chunks, embeddings)
