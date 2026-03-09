@@ -1,0 +1,79 @@
+"""测试 hybrid_retriever 函数"""
+
+import sys
+import os
+
+sys.path.insert(0, ".")
+
+from retriever import (
+    VectorRetriever,
+    BM25Retriever,
+    TavilyWebRetriever,
+    hybrid_retriever,
+)
+from utils.embedding import query_embedding
+from models import SQLiteStore, QdrantStore
+from utils.config import config
+
+
+def test_hybrid_retriever():
+    """测试混合检索器"""
+    query = "顺丰的研报分析师是谁？"
+    embedding = query_embedding(query)
+
+    # 初始化 SQLite store
+    sqlite_store = SQLiteStore(config.sqlite.path)
+
+    # 初始化 Qdrant store
+    qdrant_store = QdrantStore(
+        host=config.qdrant.host,
+        port=config.qdrant.port,
+        collection=config.qdrant.collection_name,
+    )
+
+    # Vector Retriever
+    vector_retriever = VectorRetriever(sqlite_store)
+
+    # BM25 Retriever - 需要先获取所有 chunks
+    all_chunks = [
+        sqlite_store.get_chunk_by_id(row["chunk_id"])
+        for row in sqlite_store.conn.execute("SELECT chunk_id FROM chunks")
+    ]
+    all_chunks = [c for c in all_chunks if c is not None]
+    bm25_retriever = BM25Retriever(all_chunks, language="zh")
+
+    # Web Retriever (如果环境变量存在)
+    retrievers = [vector_retriever, bm25_retriever]
+    weights = [0.5, 0.5]
+
+    tavily_key = os.environ.get("TAVILY_API_KEY")
+    if tavily_key:
+        web_retriever = TavilyWebRetriever(api_key=tavily_key)
+        retrievers.append(web_retriever)
+        weights = [0.4, 0.3, 0.3]
+
+    # 混合检索
+    results = hybrid_retriever(
+        query=query,
+        embedding=embedding,
+        retrievers=retrievers,
+        qdrant_store=qdrant_store,
+        topk=5,
+        weights=weights,
+    )
+
+    # 打印结果
+    print(f"\n查询: {query}")
+    print(f"返回 {len(results)} 条结果:\n")
+    for i, doc in enumerate(results, 1):
+        print(f"--- 结果 {i} ---")
+        print(f"来源: {doc.source}")
+        print(f"分数: {doc.score:.4f}")
+        print(f"内容: {doc.text[:200]}...")
+        print()
+
+    return results
+
+
+if __name__ == "__main__":
+    test_hybrid_retriever()

@@ -1,11 +1,7 @@
+import uuid
 import tiktoken
-from langchain_community.document_loaders import DirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-
-
-def load_markdown(path):
-    loader = DirectoryLoader(path, glob="**/*.md")
-    return loader.load()
+from models.types import Chunk
 
 
 def tiktoken_len(text):
@@ -23,6 +19,17 @@ def get_splitter(chunk_size, chunk_overlap):
     )
 
 
-def split_docs(chunk_size, chunk_overlap, docs):
+def split_text(text, doc_id, chunk_size, chunk_overlap):
     splitter = get_splitter(chunk_size, chunk_overlap)
-    return splitter.split_documents(docs)
+    texts = splitter.split_text(text)
+    chunks = []
+    for t in texts:
+        chunks.append(
+            Chunk(
+                chunk_id=str(uuid.uuid4()),
+                doc_id=doc_id,
+                text=t,
+                metadata={},
+            )
+        )
+    return chunks

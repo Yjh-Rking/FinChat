@@ -1,8 +1,6 @@
 from typing import List, Any, Dict, Tuple
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage
-from .config import CHAT_MODEL
-from .retriever import get_vector_retriever
 
 SYSTEM_PROMPT = (
     "你是中文知识库助手。"
@@ -98,19 +96,19 @@ def hyde_retrieve(
     }
 
 
-if __name__ == "__main__":
-    retriever = get_vector_retriever(10)
-    q = "langchain v1.2.10 里怎么实现多重查询检索？"
-    result = hyde_retrieve(
-        llm=CHAT_MODEL,
-        retriever=retriever,
-        question=q,
-        final_top_k=10,
-        fuse_with_original=True,
-    )
+# if __name__ == "__main__":
+#     retriever = get_vector_retriever(10)
+#     q = "langchain v1.2.10 里怎么实现多重查询检索？"
+#     result = hyde_retrieve(
+#         llm=CHAT_MODEL,
+#         retriever=retriever,
+#         question=q,
+#         final_top_k=10,
+#         fuse_with_original=True,
+#     )
 
-    print("HyDE 假设文档：\n", result["hypo_doc"])
-    print("Debug:", result["debug"])
-    print("Top docs:", len(result["docs"]))
-    for i, d in enumerate(result["docs"][:10], 1):
-        print(f"[{i}] {d.page_content[:120]}...")
+#     print("HyDE 假设文档：\n", result["hypo_doc"])
+#     print("Debug:", result["debug"])
+#     print("Top docs:", len(result["docs"]))
+#     for i, d in enumerate(result["docs"][:10], 1):
+#         print(f"[{i}] {d.page_content[:120]}...")

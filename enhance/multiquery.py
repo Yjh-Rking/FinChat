@@ -1,7 +1,5 @@
 import re
 from langchain_core.messages import SystemMessage, HumanMessage
-from .config import CHAT_MODEL
-from .retriever import get_vector_retriever
 
 SYSTEM_PROMPT = "你是中文检索查询改写助手。请严格输出多条用于向量检索的查询语句。"
 USER_PROMPT = (
@@ -102,21 +100,21 @@ def multi_query_retrieve(
     return queries, fused_docs[:final_top_k]
 
 
-if __name__ == "__main__":
-    retriever = get_vector_retriever(5)
-    question = "langchain v1.2.10 里怎么实现多重查询检索？"
-    queries, docs = multi_query_retrieve(
-        llm=CHAT_MODEL,
-        retriever=retriever,
-        question=question,
-        num_queries=5,
-        final_top_k=10,
-    )
+# if __name__ == "__main__":
+#     retriever = get_vector_retriever(5)
+#     question = "langchain v1.2.10 里怎么实现多重查询检索？"
+#     queries, docs = multi_query_retrieve(
+#         llm=CHAT_MODEL,
+#         retriever=retriever,
+#         question=question,
+#         num_queries=5,
+#         final_top_k=10,
+#     )
 
-    print("生成的子查询：")
-    for i, q in enumerate(queries, 1):
-        print(f"{i}. {q}")
+#     print("生成的子查询：")
+#     for i, q in enumerate(queries, 1):
+#         print(f"{i}. {q}")
 
-    print(f"\n融合后文档数: {len(docs)}")
-    for i, d in enumerate(docs[:5], 1):
-        print(f"[{i}] {d.page_content[:120]}...")
+#     print(f"\n融合后文档数: {len(docs)}")
+#     for i, d in enumerate(docs[:5], 1):
+#         print(f"[{i}] {d.page_content[:120]}...")

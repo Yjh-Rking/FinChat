@@ -13,3 +13,5 @@ env/
 # ignore IDE-specific files
 .vscode/
 .idea/
+# ignore claude
+.claude/

@@ -1,8 +1,44 @@
+import sqlite3
 from ragas.testset import TestsetGenerator
 from ragas.run_config import RunConfig
 from langchain_openai import ChatOpenAI
-from .config import config, EMBED_MODEL
-from .sqlite import load_docs_from_sqlite
+from langchain_core.documents import Document
+from utils import config, EMBED_MODEL
+
+
+def load_docs_from_sqlite(sqlite_path, limit=None, doc_id=None):
+    docs = []
+    with sqlite3.connect(sqlite_path) as conn:
+        conn.row_factory = sqlite3.Row  # 允许按列名访问
+        sql = "SELECT chunk_id, doc_id, text FROM chunks"
+        params = []
+        conditions = []
+
+        if doc_id:
+            conditions.append("doc_id = ?")
+            params.append(doc_id)
+        if conditions:
+            sql += " WHERE " + " AND ".join(conditions)
+
+        sql += " ORDER BY rowid"
+        if limit:
+            sql += " LIMIT ?"
+            params.append(limit)
+
+        rows = conn.execute(sql, params).fetchall()
+
+        for r in rows:
+            docs.append(
+                Document(
+                    page_content=r["text"] or "",
+                    metadata={
+                        "chunk_id": r["chunk_id"],
+                        "doc_id": r["doc_id"],
+                        "source": "sqlite_chunks",
+                    },
+                )
+            )
+    return docs
 
 
 def evaluate_rag(dataset):
