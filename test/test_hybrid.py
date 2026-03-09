@@ -4,14 +4,14 @@ import sys
 
 sys.path.insert(0, ".")
 
-from retriever import (
+from core.retriever import (
     VectorRetriever,
     BM25Retriever,
     TavilyWebRetriever,
     hybrid_retriever,
 )
-from config import config, EMBED_MODEL
-from models import SQLiteStore, QdrantStore
+from core.config import config, EMBED_MODEL
+from core.models import SQLiteStore, QdrantStore
 
 
 def test_hybrid_retriever():

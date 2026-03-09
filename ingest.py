@@ -1,8 +1,8 @@
 import logging
 from qdrant_client import models
-from models import load_markdown, QdrantStore, SQLiteStore
-from config import config, EMBED_MODEL
-from utils import split_text
+from core.models import load_markdown, QdrantStore, SQLiteStore
+from core.config import config, EMBED_MODEL
+from core import split_text
 
 logger = logging.getLogger(__name__)
 

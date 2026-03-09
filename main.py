@@ -1,6 +1,6 @@
 import logging
-from config import config, CHAT_MODEL, EMBED_MODEL
-from rerank.llm import llm_cross_encoder_rerank
+from core.config import config, CHAT_MODEL, EMBED_MODEL
+from core.rerank.llm import llm_cross_encoder_rerank
 
 logger = logging.getLogger(__name__)
 

@@ -1,4 +1,4 @@
-# utils/__init__.py
+# core/__init__.py
 from .chunking import get_splitter, split_text
 
 __all__ = [

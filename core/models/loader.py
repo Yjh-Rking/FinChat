@@ -1,6 +1,6 @@
 from pathlib import Path
 from typing import List, Tuple
-from models.types import Document
+from .types import Document
 
 
 def load_markdown(folder_path: str) -> List[Tuple[Document, str]]:
