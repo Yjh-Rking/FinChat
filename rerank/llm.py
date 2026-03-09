@@ -1,17 +1,10 @@
 import re
 import logging
 from typing import List
-from openai import OpenAI
 from models import RetrievalDoc
-from utils.config import config
+from config import CHAT_MODEL
 
 logger = logging.getLogger(__name__)
-
-# 初始化 OpenAI 客户端
-OPENAI_CLIENT = OpenAI(
-    base_url=config.chat.url,
-    api_key=config.chat.token,
-)
 
 
 def extract_score(text: str, default: float = 0.0) -> float:
@@ -24,20 +17,6 @@ def extract_score(text: str, default: float = 0.0) -> float:
         # 返回最后一个匹配的数字
         return float(matches[-1])
     return default
-
-
-def llm_chat(prompt: str, system_message: str = "") -> str:
-    messages = []
-    if system_message:
-        messages.append({"role": "system", "content": system_message})
-    messages.append({"role": "user", "content": prompt})
-
-    response = OPENAI_CLIENT.chat.completions.create(
-        model=config.chat.model,
-        messages=messages,
-        temperature=0,
-    )
-    return response.choices[0].message.content  # type: ignore
 
 
 def llm_cross_encoder_rerank(
@@ -56,7 +35,7 @@ def llm_cross_encoder_rerank(
     for doc in docs:
         user_prompt = f"问题：{query}\n\n文档: {doc.text}"
         try:
-            content = llm_chat(user_prompt, system_prompt)
+            content = CHAT_MODEL(user_prompt, system_prompt)
             score = extract_score(content)
         except Exception as e:
             logger.info(f"LLM 调用失败: {e}")

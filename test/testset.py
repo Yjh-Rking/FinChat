@@ -3,7 +3,7 @@ from ragas.testset import TestsetGenerator
 from ragas.run_config import RunConfig
 from langchain_openai import ChatOpenAI
 from langchain_core.documents import Document
-from utils import config, EMBED_MODEL
+from config import config, EMBED_MODEL
 
 
 def load_docs_from_sqlite(sqlite_path, limit=None, doc_id=None):

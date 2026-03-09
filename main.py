@@ -1,7 +1,6 @@
 import logging
-from utils.config import config, CHAT_MODEL
+from config import config, CHAT_MODEL, EMBED_MODEL
 from rerank.llm import llm_cross_encoder_rerank
-from utils.embedding import query_embedding
 
 logger = logging.getLogger(__name__)
 
@@ -11,8 +10,7 @@ if __name__ == "__main__":
     # ingest()
 
     query = "哪个分析师做了顺丰的研报？"
-    embedding = query_embedding(query)
-
+    embedding = EMBED_MODEL(query)
     # docs = hybrid_retriever(query, 10)
     # logging.info(f"检索到 {len(docs)} 条相关文档，准备重排序...")
     # docs = llm_cross_encoder_rerank(query, docs, 5)

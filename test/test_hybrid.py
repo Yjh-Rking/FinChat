@@ -10,15 +10,14 @@ from retriever import (
     TavilyWebRetriever,
     hybrid_retriever,
 )
-from utils.embedding import query_embedding
+from config import config, EMBED_MODEL
 from models import SQLiteStore, QdrantStore
-from utils.config import config
 
 
 def test_hybrid_retriever():
     """测试混合检索器"""
     query = "顺丰的研报分析师是谁？"
-    embedding = query_embedding(query)
+    embedding = EMBED_MODEL(query)
 
     # 初始化 SQLite store
     sqlite_store = SQLiteStore(config.sqlite.path)
