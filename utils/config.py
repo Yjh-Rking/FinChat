@@ -149,4 +149,5 @@ CHAT_MODEL = ChatOpenAI(
     base_url=config.chat.url,
     model=config.chat.model,
     temperature=0,
+    extra_body={"reasoning_split": True},
 )

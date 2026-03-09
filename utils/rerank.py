@@ -1,7 +1,7 @@
 import re
 import logging
-from utils.config import CHAT_MODEL
 from langchain_core.messages import HumanMessage, SystemMessage
+from .config import CHAT_MODEL
 
 logger = logging.getLogger(__name__)
 

@@ -1,7 +1,7 @@
 import sqlite3
 from langchain_qdrant import QdrantVectorStore
 from langchain_community.retrievers import BM25Retriever
-from utils.config import config, EMBED_MODEL
+from .config import config, EMBED_MODEL
 
 
 def get_vector_retriever(retriever_k=2):

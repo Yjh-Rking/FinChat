@@ -19,7 +19,7 @@ def ingest():
     chunks = split_docs(256, 32, docs)
     logger.info(f"Loaded {len(docs)} docs, split into {len(chunks)} chunks.")
 
-    init_table()
+    init_table(config.sqlite.path)
     with sqlite3.connect(config.sqlite.path) as conn:
         ids = []
         for chunk in chunks:
@@ -66,66 +66,3 @@ if __name__ == "__main__":
     """
     ans = CHAT_MODEL.invoke(prompt).content
     logger.info("\n回答:\n", ans)
-
-# from ragas.testset import TestsetGenerator
-# from ragas.metrics import faithfulness, answer_relevancy
-# from ragas import evaluate
-
-
-# def generate_testset(docs, llm, embeddings):
-
-#     generator = TestsetGenerator.from_langchain(
-#         generator_llm=llm,
-#         critic_llm=llm,
-#         embeddings=embeddings
-#     )
-
-#     return generator.generate_with_langchain_docs(
-#         docs,
-#         test_size=20
-#     )
-
-
-# def evaluate_rag(dataset):
-
-#     result = evaluate(
-#         dataset,
-#         metrics=[
-#             faithfulness,
-#             answer_relevancy
-#         ]
-#     )
-
-#     logger.info(result)
-
-
-# import sqlite3
-
-# # 假设你的数据库路径是 config.sqlite.path
-# conn = sqlite3.connect(config.sqlite.path)
-# cursor = conn.cursor()
-
-# # 查询所有数据
-# cursor.execute("SELECT chunk_id, doc_id, text FROM chunks")
-# rows = cursor.fetchall()
-
-# for row in rows:
-#     logger.info(f"Chunk ID: {row[0]}")
-#     logger.info(f"Doc ID:   {row[1]}")
-#     logger.info(f"Text:     {row[2][:100]}...")  # 只打印前100字符
-#     logger.info("-" * 50)
-
-
-# chunk_id = "67e0dde3-f8ec-4abf-b08e-8ff8d5395705"
-# cursor.execute(
-#     "SELECT text FROM chunks WHERE chunk_id = ?",
-#     (chunk_id,)
-# )
-# result = cursor.fetchone()
-# if result:
-#     logger.info("Found chunk text:", result[0])
-# else:
-#     logger.info("Chunk not found!")
-
-
-# conn.close()
