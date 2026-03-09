@@ -48,13 +48,9 @@ def create_chat(prompt: str, system_message: str = "") -> str:
     response = client.chat.completions.create(
         model=config.chat.model,
         messages=messages,
-        temperature=0,
+        extra_body={"temperature": 0, "reasoning_split": True},
     )
-    content = response.choices[0].message.content  # type: ignore
-    # Strip thinking tags if present
-    if "<think>" in content:
-        content = content.split("</think>")[-1].strip()
-    return content
+    return response.choices[0].message.content  # type: ignore
 
 
 config = Config()
