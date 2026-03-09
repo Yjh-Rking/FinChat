@@ -1,7 +1,6 @@
 """测试 hybrid_retriever 函数"""
 
 import sys
-import os
 
 sys.path.insert(0, ".")
 
@@ -44,13 +43,9 @@ def test_hybrid_retriever():
 
     # Web Retriever (如果环境变量存在)
     retrievers = [vector_retriever, bm25_retriever]
-    weights = [0.5, 0.5]
-
-    tavily_key = os.environ.get("TAVILY_API_KEY")
-    if tavily_key:
-        web_retriever = TavilyWebRetriever(api_key=tavily_key)
-        retrievers.append(web_retriever)
-        weights = [0.4, 0.3, 0.3]
+    web_retriever = TavilyWebRetriever(api_key=config.tavily.token)
+    retrievers.append(web_retriever)
+    weights = [0.4, 0.3, 0.3]
 
     # 混合检索
     results = hybrid_retriever(

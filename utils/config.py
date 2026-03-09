@@ -127,12 +127,25 @@ class QdrantSettings(BaseSettings):
     path: str = "data/qdrant.db"
 
 
+class TavilySettings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        env_prefix="tavily_",
+        extra="ignore",
+        case_sensitive=False,
+    )
+    url: str = "tavily_url"
+    token: str = "tavily_token"
+
+
 class Config(BaseModel):
     # Settings
     embed: EmbedSettings = EmbedSettings()
     chat: ChatSettings = ChatSettings()
     sqlite: SQLiteSettings = SQLiteSettings()
     qdrant: QdrantSettings = QdrantSettings()
+    tavily: TavilySettings = TavilySettings()
     log: LoggingSettings = LoggingSettings()
     data: DataSettings = DataSettings()
 
