@@ -1,13 +1,13 @@
 from pydantic import BaseModel
 from openai import OpenAI
 
-from config.logging import LoggingSettings
-from config.data import DataSettings
-from config.embed import EmbedSettings
-from config.chat import ChatSettings
-from config.sqlite import SQLiteSettings
-from config.qdrant import QdrantSettings
-from config.tavily import TavilySettings
+from core.config.logging import LoggingSettings
+from core.config.data import DataSettings
+from core.config.embed import EmbedSettings
+from core.config.chat import ChatSettings
+from core.config.sqlite import SQLiteSettings
+from core.config.qdrant import QdrantSettings
+from core.config.tavily import TavilySettings
 
 
 class Config(BaseModel):
@@ -40,7 +40,6 @@ def create_chat(prompt: str, system_message: str = "") -> str:
         api_key=config.chat.token,
         base_url=config.chat.url,
     )
-    # extra_body={"response_format": {"type": "json_object"}, "reasoning_split": True}
     messages = []
     if system_message:
         messages.append({"role": "system", "content": system_message})
@@ -51,7 +50,11 @@ def create_chat(prompt: str, system_message: str = "") -> str:
         messages=messages,
         temperature=0,
     )
-    return response.choices[0].message.content  # type: ignore
+    content = response.choices[0].message.content  # type: ignore
+    # Strip thinking tags if present
+    if "<think>" in content:
+        content = content.split("</think>")[-1].strip()
+    return content
 
 
 config = Config()

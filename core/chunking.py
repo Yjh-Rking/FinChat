@@ -1,7 +1,7 @@
 import uuid
 import tiktoken
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from models.types import Chunk
+from core.models.types import Chunk
 
 
 def tiktoken_len(text):

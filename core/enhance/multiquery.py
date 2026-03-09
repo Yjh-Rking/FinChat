@@ -1,5 +1,5 @@
 import re
-from langchain_core.messages import SystemMessage, HumanMessage
+from core.config import CHAT_MODEL
 
 SYSTEM_PROMPT = "你是中文检索查询改写助手。请严格输出多条用于向量检索的查询语句。"
 USER_PROMPT = (
@@ -14,17 +14,13 @@ USER_PROMPT = (
 
 
 def generate_multi_queries(
-    llm,
     question,
     n,
 ):
-    resp = llm.invoke(
-        [
-            SystemMessage(content=SYSTEM_PROMPT),
-            HumanMessage(content=USER_PROMPT.format(n=n, question=question)),
-        ]
+    text = CHAT_MODEL(
+        prompt=USER_PROMPT.format(n=n, question=question),
+        system_message=SYSTEM_PROMPT,
     )
-    text = (resp.content or "").strip()
 
     lines = []
     for line in text.splitlines():
@@ -74,14 +70,13 @@ def reciprocal_rank_fusion(ranked_lists, k):
 
 
 def multi_query_retrieve(
-    llm,
     retriever,
     question,
     num_queries: int = 5,
     final_top_k: int = 12,
 ):
     # 1) 生成多查询
-    queries = generate_multi_queries(llm, question, n=num_queries)
+    queries = generate_multi_queries(question, n=num_queries)
 
     # 2) 每个 query 分别检索
     all_ranked_docs = []
@@ -104,7 +99,6 @@ def multi_query_retrieve(
 #     retriever = get_vector_retriever(5)
 #     question = "langchain v1.2.10 里怎么实现多重查询检索？"
 #     queries, docs = multi_query_retrieve(
-#         llm=CHAT_MODEL,
 #         retriever=retriever,
 #         question=question,
 #         num_queries=5,
