@@ -1,5 +1,5 @@
 import logging
-from typing import Set, Optional
+from typing import Set, Optional, Union, Tuple, List
 from core.config import CHAT_MODEL
 from core.retriever import HybridSearcher
 from core.rerank import (
@@ -22,7 +22,8 @@ def rag_pipeline(
     use_hypo_doc: bool = True,
     use_hyde_rewrite: bool = True,
     rrf_k: int = 60,
-) -> str:
+    return_contexts: bool = False,
+) -> Union[str, Tuple[str, List[str]]]:
     """
     处理查询的统一入口
 
@@ -37,9 +38,11 @@ def rag_pipeline(
         use_hypo_doc: 是否使用假设文档检索 (仅 hyde 模式有效)
         use_hyde_rewrite: 是否使用 hyde rewrite 检索 (仅 hyde 模式有效)
         rrf_k: RRF 融合参数
+        return_contexts: 是否返回检索到的上下文列表
 
     Returns:
-        LLM 生成的答案
+        如果 return_contexts=False: LLM 生成的答案 (str)
+        如果 return_contexts=True: (答案, 上下文列表) (tuple)
     """
     if modes is None:
         modes = {"base"}
@@ -70,9 +73,12 @@ def rag_pipeline(
             docs = llm_cross_encoder_rerank(query, docs, topk=topk)
         logger.debug(f"{len(docs)} docs after rerank")
 
+    # 获取上下文文本列表
+    contexts = [doc.text for doc in docs]
+
     # LLM 生成答案
-    if docs:
-        context = "\n\n".join(doc.text for doc in docs)
+    if contexts:
+        context = "\n\n".join(contexts)
         prompt = f"""请根据以下内容回答问题。
             ---
             {context}
@@ -86,4 +92,6 @@ def rag_pipeline(
     else:
         answer = "抱歉，没有找到相关信息。"
 
+    if return_contexts:
+        return answer, contexts
     return answer
