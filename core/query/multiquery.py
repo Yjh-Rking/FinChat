@@ -57,13 +57,12 @@ def generate_multi_queries(question: str, n: int = 5) -> List[str]:
     system_prompt = "你是中文检索查询改写助手。请严格输出多条用于向量检索的查询语句。"
 
     user_prompt = """
-        请把下面问题改写为 {n} 条不同角度的中文检索查询。
-        要求：
+        原问题：{question}
+        请把原问题改写为 {n} 条不同角度的中文检索查询，要求：
         1) 全部简体中文
         2) 每行一条，不要编号
         3) 不要解释，不要多余文本
         4) 保留原问题中的实体、时间、约束
-        原问题：{question}
     """
 
     text = CHAT_MODEL(
