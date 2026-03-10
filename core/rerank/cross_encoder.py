@@ -6,6 +6,7 @@ from core.models import RetrievalDoc
 from core.config import CHAT_MODEL
 
 logger = logging.getLogger(__name__)
+reranker = CrossEncoder("BAAI/bge-reranker-small")
 
 
 def extract_score(text: str, default: float = 0.0) -> float:
@@ -67,7 +68,7 @@ def transformers_cross_encoder_rerank(
     """
     if not docs:
         return []
-    reranker = CrossEncoder("BAAI/bge-reranker-base")
+
     # 构建 [query, doc] 对
     query_doc_pairs = [[query, doc.text] for doc in docs]
 
