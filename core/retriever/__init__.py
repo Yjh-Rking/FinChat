@@ -1,4 +1,5 @@
-# retriever/__init__.py
+# core/retriever/__init__.py
+
 from .vector import VectorRetriever
 from .bm25 import BM25Retriever
 from .web import TavilyWebRetriever

@@ -5,8 +5,8 @@ HyDE (Hypothetical Document Embeddings) 查询增强
 """
 
 from typing import List
-from core.config import CHAT_MODEL
-from core.query.utils import clean_queries
+from core.api import chat_model
+from core.query import clean_queries
 
 
 def generate_hypo_docs(query: str, max_chars: int = 200) -> str:
@@ -31,7 +31,7 @@ def generate_hypo_docs(query: str, max_chars: int = 200) -> str:
         4) 不要编造数据，不需要输出思考
     """
 
-    text = CHAT_MODEL(
+    text = chat_model(
         prompt=user_prompt.format(question=query, max_chars=max_chars),
         system_message=system_prompt,
     )
@@ -66,7 +66,7 @@ def hyde_rewrite(query: str, n: int = 5, original_query: bool = True) -> List[st
     hypo_doc = generate_hypo_docs(query)
 
     # Step 2: 基于假设文档生成多个查询
-    text = CHAT_MODEL(
+    text = chat_model(
         prompt=user_prompt.format(hypo_doc=hypo_doc, n=n),
         system_message=system_prompt,
     )

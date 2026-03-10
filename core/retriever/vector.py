@@ -1,7 +1,7 @@
 import logging
 from typing import Optional
 from core.models import RetrievalDoc, SQLiteStore, QdrantStore
-from core.config import EMBED_MODEL
+from core.api import embedding_model
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ class VectorRetriever:
         if qdrant is None:
             logger.warning("VectorRetriever 需要 qdrant_store 参数")
             return []
-        embedding = EMBED_MODEL(query)
+        embedding = embedding_model(query)
         return self.qdrant_retrieve(qdrant, embedding, topk)
 
     def qdrant_retrieve(

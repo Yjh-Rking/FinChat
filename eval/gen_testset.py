@@ -11,8 +11,9 @@ import random
 from dataclasses import dataclass, asdict
 from pathlib import Path
 
-from core.config import config, CHAT_MODEL
+from config import config
 from core.models.sqlite import SQLiteStore
+from core.api import chat_model
 
 
 @dataclass
@@ -83,7 +84,7 @@ def generate_test_dataset(
             """
 
             try:
-                response = CHAT_MODEL(
+                response = chat_model(
                     prompt=prompt,
                     system_message="你是一个金融研报分析助手。请根据提供的研报内容生成一个相关的问题和标准答案。",
                     extra_body={

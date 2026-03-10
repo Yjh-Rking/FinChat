@@ -12,7 +12,7 @@
 import logging
 from typing import List, Set, Optional
 from core.models import RetrievalDoc, SQLiteStore, QdrantStore
-from core.config import config
+from config import config
 
 logger = logging.getLogger(__name__)
 

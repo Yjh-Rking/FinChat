@@ -3,7 +3,8 @@ import logging
 from typing import List
 from sentence_transformers import CrossEncoder
 from core.models import RetrievalDoc
-from core.config import CHAT_MODEL, config
+from config import config
+from core.api import chat_model
 
 logger = logging.getLogger(__name__)
 reranker = CrossEncoder(config.rerank.model, device="cpu", max_length=512)
@@ -37,7 +38,7 @@ def llm_cross_encoder_rerank(
     for doc in docs:
         user_prompt = f"问题：{query}\n\n文档: {doc.text}"
         try:
-            content = CHAT_MODEL(user_prompt, system_prompt)
+            content = chat_model(user_prompt, system_prompt)
             score = extract_score(content)
         except Exception as e:
             logger.info(f"LLM 调用失败: {e}")

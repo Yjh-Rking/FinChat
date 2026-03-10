@@ -1,12 +1,12 @@
 import logging
 from typing import Set, Optional, Union, Tuple, List
-from core.config import CHAT_MODEL
 from core.retriever import HybridSearcher
 from core.rerank import (
     llm_cross_encoder_rerank,
     transformers_cross_encoder_rerank,
     reciprocal_rank_fusion,
 )
+from core.api import chat_model
 
 logger = logging.getLogger(__name__)
 
@@ -86,7 +86,7 @@ def rag_pipeline(
             问题: {query}
             要求：简洁准确地回答，直接给出答案，不需要解释。
         """
-        answer = CHAT_MODEL(
+        answer = chat_model(
             prompt=prompt, system_message="你是一个专业的金融分析师助手。"
         )
     else:

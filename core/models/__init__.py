@@ -1,4 +1,5 @@
-# models/__init__.py
+# core/models/__init__.py
+
 from .types import Document, Chunk, RetrievalDoc
 from .loader import load_markdown
 from .sqlite import SQLiteStore

@@ -5,8 +5,8 @@ Multi-Query 查询增强
 """
 
 from typing import List
-from core.config import CHAT_MODEL
-from core.query.utils import clean_queries
+from core.api import chat_model
+from core.query import clean_queries
 
 
 def generate_multi_queries(query: str, n: int = 5) -> List[str]:
@@ -31,7 +31,7 @@ def generate_multi_queries(query: str, n: int = 5) -> List[str]:
         4) 保留原问题中的实体、时间、约束
     """
 
-    text = CHAT_MODEL(
+    text = chat_model(
         prompt=user_prompt.format(n=n, question=query),
         system_message=system_prompt,
     )

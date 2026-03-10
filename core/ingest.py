@@ -1,8 +1,9 @@
 import logging
 from qdrant_client import models
 from core.models import load_markdown, QdrantStore, SQLiteStore
-from core.config import config, EMBED_MODEL
+from config import config
 from core.chunk import split_text, tiktoken_len
+from core.api import embedding_model
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +52,6 @@ def ingestion_pipeline():
 
         # QDdrant store chunks + embeddings
         texts = [c.text for c in chunks]
-        embeddings = [EMBED_MODEL(text) for text in texts]
+        embeddings = [embedding_model(text) for text in texts]
         qdrant_store.upsert_chunks(chunks, embeddings)
         logger.info(f"Split into {len(chunks)} chunks")
