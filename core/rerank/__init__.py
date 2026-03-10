@@ -1,5 +1,9 @@
 # rerank/__init__.py
-from .llm import llm_cross_encoder_rerank
-from .transformers import transformers_cross_encoder_rerank
+from .cross_encoder import llm_cross_encoder_rerank, transformers_cross_encoder_rerank
+from .rrf import reciprocal_rank_fusion
 
-__all__ = ["llm_cross_encoder_rerank", "transformers_cross_encoder_rerank"]
+__all__ = [
+    "llm_cross_encoder_rerank",
+    "transformers_cross_encoder_rerank",
+    "reciprocal_rank_fusion",
+]
