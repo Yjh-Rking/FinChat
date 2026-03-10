@@ -15,44 +15,35 @@ if __name__ == "__main__":
     topk = 5
 
     # 1. 仅 base (without web)
-    print("=" * 50)
-    print("模式: base (without web)")
+    logger.info("=" * 50 + " mode: base (without web) " + "=" * 50)
     answer = rag_pipeline(
         query, modes={"base"}, use_web=False, use_rerank="transformers", topk=topk
     )
-    print(f"问题: {query}")
-    print(f"答案: {answer}")
+    logger.info(f"问题: {query}\n答案: {answer}")
 
     # 2. 仅 base (with web)
-    print("=" * 50)
-    print("模式: base (with web)")
+    logger.info("=" * 50 + " mode: base (with web) " + "=" * 50)
     answer = rag_pipeline(
         query, modes={"base"}, use_web=True, use_rerank="transformers", topk=topk
     )
-    print(f"问题: {query}")
-    print(f"答案: {answer}")
+    logger.info(f"问题: {query}\n答案: {answer}")
 
     # 3. base + mqe
-    print("=" * 50)
-    print("模式: base + mqe")
+    logger.info("=" * 50 + " mode: base + mqe " + "=" * 50)
     answer = rag_pipeline(
         query, modes={"base", "mqe"}, use_web=True, mqe_n=3, topk=topk
     )
-    print(f"问题: {query}")
-    print(f"答案: {answer}")
+    logger.info(f"问题: {query}\n答案: {answer}")
 
     # 4. base + hyde (完整)
-    print("=" * 50)
-    print("模式: base + hyde (完整)")
+    logger.info("=" * 50 + " mode: base + hyde (完整) " + "=" * 50)
     answer = rag_pipeline(
         query, modes={"base", "hyde"}, use_web=True, hyde_n=3, topk=topk
     )
-    print(f"问题: {query}")
-    print(f"答案: {answer}")
+    logger.info(f"问题: {query}\n答案: {answer}")
 
     # 5. base + hyde (仅 hyde_doc)
-    print("=" * 50)
-    print("模式: base + hyde (仅 hypo_doc)")
+    logger.info("=" * 50 + " mode: base + hyde (仅 hypo_doc) " + "=" * 50)
     answer = rag_pipeline(
         query,
         modes={"base", "hyde"},
@@ -61,12 +52,10 @@ if __name__ == "__main__":
         use_hyde_rewrite=False,
         topk=topk,
     )
-    print(f"问题: {query}")
-    print(f"答案: {answer}")
+    logger.info(f"问题: {query}\n答案: {answer}")
 
     # 6. base + hyde (仅 hyde_rewrite)
-    print("=" * 50)
-    print("模式: base + hyde (仅 hyde_rewrite)")
+    logger.info("=" * 50 + " mode: base + hyde (仅 hyde_rewrite) " + "=" * 50)
     answer = rag_pipeline(
         query,
         modes={"base", "hyde"},
@@ -75,14 +64,11 @@ if __name__ == "__main__":
         use_hyde_rewrite=True,
         topk=topk,
     )
-    print(f"问题: {query}")
-    print(f"答案: {answer}")
+    logger.info(f"问题: {query}\n答案: {answer}")
 
     # 7. base + mqe + hyde (完整)
-    print("=" * 50)
-    print("模式: base + mqe + hyde (完整)")
+    logger.info("=" * 50 + " mode: base + mqe + hyde (完整) " + "=" * 50)
     answer = rag_pipeline(
         query, modes={"base", "mqe", "hyde"}, use_web=True, mqe_n=3, hyde_n=3, topk=topk
     )
-    print(f"问题: {query}")
-    print(f"答案: {answer}")
+    logger.info(f"问题: {query}\n答案: {answer}")
