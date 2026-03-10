@@ -1,6 +1,6 @@
 import logging
-from typing import Optional, Any
-from core.models import RetrievalDoc, SQLiteStore, QdrantStore, Chunk
+from typing import Optional
+from core.models import RetrievalDoc, SQLiteStore, QdrantStore
 from core.config import EMBED_MODEL
 
 logger = logging.getLogger(__name__)
