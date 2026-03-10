@@ -73,7 +73,7 @@ def transformers_cross_encoder_rerank(
     query_doc_pairs = [[query, doc.text] for doc in docs]
 
     # 获取相关性分数
-    scores = reranker.predict(query_doc_pairs)
+    scores = reranker.predict(query_doc_pairs, show_progress_bar=False)
 
     # 将分数赋值给文档
     for doc, score in zip(docs, scores):
