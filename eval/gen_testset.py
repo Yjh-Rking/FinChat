@@ -1,25 +1,22 @@
 # -*- coding: utf-8 -*-
 """
-数据集生成器
+测试数据集生成器
 
-从SQLite和Qdrant中读取现有数据，生成RAG评估所需的测试数据集。
-使用LLM为随机采样的chunks生成问答对。
+从SQLite中读取随机采样chunks，使用LLM生成问答对
+作为RAG评估所需的测试数据集
 """
 
 import json
 import random
 from dataclasses import dataclass, asdict
-from typing import Optional
 from pathlib import Path
 
-from core.config import config, EMBED_MODEL, CHAT_MODEL
+from core.config import config, CHAT_MODEL
 from core.models.sqlite import SQLiteStore
-from core.models.qdrant import QdrantStore
 
 
 @dataclass
 class TestSample:
-    """测试样本"""
     question: str
     ground_truth: str
     context: str
@@ -44,10 +41,6 @@ def generate_test_dataset(
     """
     # 初始化存储
     sqlite_store = SQLiteStore(db_path=config.sqlite.path)
-    qdrant_store = QdrantStore(
-        collection=config.qdrant.collection,
-        path=config.qdrant.path,
-    )
 
     # 随机采样chunks
     chunks = sqlite_store.get_random_chunks(k=n_samples * 3)  # 多采样一些以便过滤
@@ -65,37 +58,39 @@ def generate_test_dataset(
         selected_chunks.append(random.choice(doc_chunks))
 
     # 截取所需数量
-    selected_chunks = selected_chunks[:n_samples]
-
     samples = []
-
-    for chunk in selected_chunks:
+    for chunk in selected_chunks[:n_samples]:
         context = chunk.text
 
         if use_llm:
-            # 使用LLM生成问答对
-            prompt = f"""你是一个金融研报分析助手。请根据以下研报内容生成一个相关的问题和标准答案。
+            prompt = f"""。
+                要求：
+                1. 问题必须是关于这份研报内容的具体问题
+                2. 答案应该直接来自原文内容
+                3. 问题要简洁明了
+                4. **请直接返回纯 JSON，不要使用任何代码块或多余文本**
+                
+                ---
+                研报内容：
+                {context[:1000]}  # 截取前1000字避免过长
+                ---
 
-要求：
-1. 问题必须是关于这份研报内容的具体问题
-2. 答案应该直接来自原文内容
-3. 问题要简洁明了
-
----
-研报内容：
-{context[:1000]}  # 截取前1000字避免过长
----
-
-请按以下JSON格式输出，不要有其他内容：
-{{
-    "question": "生成的问题",
-    "ground_truth": "标准答案"
-}}"""
+                请按以下JSON格式输出，不要有其他内容：
+                {{
+                    "question": "生成的问题",
+                    "ground_truth": "标准答案"
+                }}
+            """
 
             try:
                 response = CHAT_MODEL(
                     prompt=prompt,
-                    system_message="你是一个专业的金融分析师助手。",
+                    system_message="你是一个金融研报分析助手。请根据提供的研报内容生成一个相关的问题和标准答案。",
+                    extra_body={
+                        "reasoning_split": True,
+                        "response_format": {"type": "json_object"},
+                        "raw_json": True,  # 关键，告诉模型返回纯 JSON
+                    },
                 )
                 # 尝试解析JSON
                 result = json.loads(response)
