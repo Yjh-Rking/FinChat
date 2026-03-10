@@ -58,9 +58,9 @@ def rag_pipeline(
     )
 
     # RRF 融合
-    logger.info(f"{len(all_retrieval_results)} group retrieval results for RRF fusion")
+    logger.debug(f"{len(all_retrieval_results)} group retrieval results for RRF fusion")
     docs = reciprocal_rank_fusion(all_retrieval_results, k=rrf_k)
-    logger.info(f"{len(docs)} docs after RRF fusion")
+    logger.debug(f"{len(docs)} docs after RRF fusion")
 
     # 重排序阶段
     if use_rerank != "none" and docs:
@@ -68,7 +68,7 @@ def rag_pipeline(
             docs = transformers_cross_encoder_rerank(query, docs, topk=topk)
         elif use_rerank == "llm":
             docs = llm_cross_encoder_rerank(query, docs, topk=topk)
-        logger.info(f"{len(docs)} docs after rerank")
+        logger.debug(f"{len(docs)} docs after rerank")
 
     # LLM 生成答案
     if docs:

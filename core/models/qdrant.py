@@ -25,7 +25,7 @@ class QdrantStore:
                         distance=distance,
                     ),
                 )
-                logger.info(
+                logger.debug(
                     f"Qdrant collection: {self.collection} created successfully"
                 )
             except Exception as e:
@@ -34,7 +34,7 @@ class QdrantStore:
                 )
                 raise
         else:
-            logger.info(f"Qdrant collection: {self.collection} already exists")
+            logger.debug(f"Qdrant collection: {self.collection} already exists")
 
     def upsert_chunks(self, chunks: list[Chunk], q_embedding: list[list[float]]):
         points = []
