@@ -1,6 +1,6 @@
 from typing import List
 from sentence_transformers import CrossEncoder
-from models import RetrievalDoc
+from core.models import RetrievalDoc
 
 reranker = CrossEncoder("BAAI/bge-reranker-base")
 

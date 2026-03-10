@@ -1,7 +1,7 @@
 import logging
 import requests
 from typing import List
-from models import RetrievalDoc
+from core.models import RetrievalDoc
 
 logger = logging.getLogger(__name__)
 

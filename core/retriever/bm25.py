@@ -2,7 +2,7 @@ import re
 import jieba
 from rank_bm25 import BM25Okapi
 from typing import List
-from models import Chunk, RetrievalDoc
+from core.models import Chunk, RetrievalDoc
 
 
 EN_STOPWORDS = {

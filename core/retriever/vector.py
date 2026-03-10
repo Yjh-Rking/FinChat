@@ -1,5 +1,5 @@
 import logging
-from models import RetrievalDoc, SQLiteStore, QdrantStore
+from core.models import RetrievalDoc, SQLiteStore, QdrantStore
 
 logger = logging.getLogger(__name__)
 
@@ -9,9 +9,9 @@ class VectorRetriever:
         self.sqlite = sqlite_store
 
     def qdrant_retrieve(
-        self, qdrant: QdrantStore, query_embedding: list[float], topk: int = 10
+        self, qdrant: QdrantStore, q_embedding: list[float], topk: int = 10
     ) -> list[RetrievalDoc]:
-        points = qdrant.get_points_by_embedding(q_embedding=query_embedding, topk=topk)
+        points = qdrant.get_points_by_embedding(q_embedding=q_embedding, topk=topk)
         retrieval_docs = []
 
         for point in points.points:

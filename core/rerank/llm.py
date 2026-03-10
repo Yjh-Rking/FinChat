@@ -1,8 +1,8 @@
 import re
 import logging
 from typing import List
-from models import RetrievalDoc
-from config import CHAT_MODEL
+from core.models import RetrievalDoc
+from core.config import CHAT_MODEL
 
 logger = logging.getLogger(__name__)
 

@@ -1,6 +1,6 @@
 import logging
 from typing import List, Optional, Any
-from models import RetrievalDoc
+from core.models import RetrievalDoc
 
 logger = logging.getLogger(__name__)
 
