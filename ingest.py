@@ -3,6 +3,7 @@ from qdrant_client import models
 from core.models import load_markdown, QdrantStore, SQLiteStore
 from core.config import config, EMBED_MODEL
 from core import split_text
+from core.chunking import tiktoken_len
 
 logger = logging.getLogger(__name__)
 
@@ -24,9 +25,22 @@ if __name__ == "__main__":
         # SQLite store documents
         sqlite_store.insert_document(doc)
 
-        # SQLite store chunks
+        # Chunking
         chunks = split_text(text, doc.doc_id, chunk_size=256, chunk_overlap=32)
-        sqlite_store.insert_chunks(chunks)
+        min_tokens = 20  # 最少 20 个 token
+        valid_chunks = []
+        for c in chunks:
+            text = c.text.strip()
+            if not text:
+                continue
+            # 过滤纯标点
+            if text in "。！？.,:;?！":
+                continue
+            # 过滤 token 太少
+            if tiktoken_len(text) < min_tokens:
+                continue
+            valid_chunks.append(c)
+        chunks = valid_chunks
 
         # QDdrant store chunks + embeddings
         texts = [c.text for c in chunks]

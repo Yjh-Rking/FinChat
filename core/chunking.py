@@ -24,6 +24,9 @@ def split_text(text, doc_id, chunk_size, chunk_overlap):
     texts = splitter.split_text(text)
     chunks = []
     for t in texts:
+        # 过滤空文本和纯标点文本
+        if not t.strip() or t.strip() in "。！？.,:;?":
+            continue
         chunks.append(
             Chunk(
                 chunk_id=str(uuid.uuid4()),

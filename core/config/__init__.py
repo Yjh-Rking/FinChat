@@ -36,7 +36,9 @@ def create_embedding(text: str) -> list[float]:
     return response.data[0].embedding
 
 
-def create_chat(prompt: str, system_message: str = "") -> str:
+def create_chat(
+    prompt: str, system_message: str = "", extra_body: dict = {"reasoning_split": True}
+) -> str:
     """Chat using OpenAI's chat completions API."""
     client = OpenAI(
         api_key=config.chat.token,
@@ -50,7 +52,8 @@ def create_chat(prompt: str, system_message: str = "") -> str:
     response = client.chat.completions.create(
         model=config.chat.model,
         messages=messages,
-        extra_body={"temperature": 0, "reasoning_split": True},
+        temperature=0,
+        extra_body=extra_body,
     )
     return response.choices[0].message.content  # type: ignore
 
@@ -61,15 +64,6 @@ EMBED_MODEL = create_embedding
 CHAT_MODEL = create_chat
 
 __all__ = [
-    "LoggingSettings",
-    "DataSettings",
-    "EmbedSettings",
-    "ChatSettings",
-    "SQLiteSettings",
-    "QdrantSettings",
-    "TavilySettings",
-    "RerankSettings",
-    "Config",
     "config",
     "EMBED_MODEL",
     "CHAT_MODEL",
