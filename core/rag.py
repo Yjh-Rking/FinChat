@@ -11,7 +11,7 @@ from core.rerank import (
 logger = logging.getLogger(__name__)
 
 
-def process_query(
+def rag_pipeline(
     query: str,
     modes: Optional[Set[str]] = None,
     use_web: bool = True,
@@ -61,10 +61,6 @@ def process_query(
     logger.info(f"{len(all_retrieval_results)} group retrieval results for RRF fusion")
     docs = reciprocal_rank_fusion(all_retrieval_results, k=rrf_k)
     logger.info(f"{len(docs)} docs after RRF fusion")
-
-    # Cut
-    docs = docs[: topk * 2]
-    logger.info(f"{len(docs)} docs after cut")
 
     # 重排序阶段
     if use_rerank != "none" and docs:

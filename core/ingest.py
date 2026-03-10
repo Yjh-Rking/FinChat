@@ -7,7 +7,14 @@ from core.chunk import split_text, tiktoken_len
 logger = logging.getLogger(__name__)
 
 
-if __name__ == "__main__":
+def ingestion_pipeline():
+    """
+    数据摄取流程：
+    1. 从 Markdown 文件加载文档
+    2. 将文档存储到 SQLite 中
+    3. 对文档进行分块，并存储分块到 SQLite 中
+    4. 生成分块的向量表示，并存储到 Qdrant 中
+    """
     docs = load_markdown(config.data.path)
     logger.info(f"Loaded {len(docs)} docs")
 

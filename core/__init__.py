@@ -1,7 +1,9 @@
 # core/__init__.py
 
-from core.rag import process_query
+from core.rag import rag_pipeline
+from core.ingest import ingestion_pipeline
 
 __all__ = [
-    "process_query",
+    "rag_pipeline",
+    "ingestion_pipeline",
 ]
