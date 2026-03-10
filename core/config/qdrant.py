@@ -9,7 +9,6 @@ class QdrantSettings(BaseSettings):
         extra="ignore",
         case_sensitive=False,
     )
-    host: str = "qdrant_host"
-    port: int = 6333
-    collection_name: str = "research_collection"
     path: str = "data/qdrant.db"
+    url: str = "http://localhost:6333"
+    collection: str = "chunks"

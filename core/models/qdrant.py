@@ -8,8 +8,11 @@ logger = logging.getLogger(__name__)
 
 
 class QdrantStore:
-    def __init__(self, host: str, port: int, collection: str):
-        self.client = QdrantClient(host=host, port=port)
+    def __init__(self, collection, url=None, path=None):
+        if path:
+            self.client = QdrantClient(path=path)
+        else:
+            self.client = QdrantClient(url=url)
         self.collection = collection
 
     def init_collection(self, vector_size: int = 1024, distance=models.Distance.COSINE):

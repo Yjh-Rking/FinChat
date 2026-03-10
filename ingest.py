@@ -22,9 +22,7 @@ if __name__ == "__main__":
 
     # Qdrant insert (Chunks + Embeddings)
     qdrant_store = QdrantStore(
-        host=config.qdrant.host,
-        port=config.qdrant.port,
-        collection=config.qdrant.collection_name,
+        url=config.qdrant.url, collection=config.qdrant.collection
     )
     qdrant_store.init_collection(vector_size=1024, distance=models.Distance.COSINE)
     texts = [c.text for c in chunks]

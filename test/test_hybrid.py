@@ -24,9 +24,7 @@ def test_hybrid_retriever():
 
     # 初始化 Qdrant store
     qdrant_store = QdrantStore(
-        host=config.qdrant.host,
-        port=config.qdrant.port,
-        collection=config.qdrant.collection_name,
+        url=config.qdrant.url, collection=config.qdrant.collection
     )
 
     # Vector Retriever
