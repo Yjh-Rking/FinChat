@@ -1,8 +1,9 @@
 # query/__init__.py
-from .hyde import hyde_enhance
+from .hyde import generate_hypo_docs, hyde_rewrite
 from .multiquery import multiquery_enhance
 
 __all__ = [
-    "hyde_enhance",
+    "generate_hypo_docs",
+    "hyde_rewrite",
     "multiquery_enhance",
 ]
