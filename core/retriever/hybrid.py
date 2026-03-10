@@ -89,18 +89,18 @@ class HybridSearcher:
 
         # 向量检索
         vector_docs = self.vector_retrieve(query, topk)
-        logger.info(f"Base - Vector: {len(vector_docs)} docs")
+        logger.debug(f"Base - Vector: {len(vector_docs)} docs")
         all_docs.append(vector_docs)
 
         # BM25 检索
         bm25_docs = self.bm25_retrieve(query, topk)
-        logger.info(f"Base - BM25: {len(bm25_docs)} docs")
+        logger.debug(f"Base - BM25: {len(bm25_docs)} docs")
         all_docs.append(bm25_docs)
 
         # Web 检索 (可选)
         if use_web:
             web_docs = self.web_retrieve(query, topk)
-            logger.info(f"Base - Web: {len(web_docs)} docs")
+            logger.debug(f"Base - Web: {len(web_docs)} docs")
             all_docs.append(web_docs)
 
         return all_docs
@@ -119,7 +119,7 @@ class HybridSearcher:
         """
         # 生成多个查询
         queries = self.multiquery_enhance(query, n=n, original_query=True)
-        logger.info(f"MQE 查询: {queries}")
+        logger.debug(f"MQE retriever: {queries}")
 
         # 每个查询分别进行 vector + BM25 检索
         all_docs = []
@@ -152,15 +152,15 @@ class HybridSearcher:
         # 1. 假设文档检索 (可选)
         if use_hypo_doc:
             hypo_doc = self.generate_hypo_docs(query)
-            logger.info(f"HyDE 假设文档: {hypo_doc[:50]}...")
+            logger.debug(f"HyDE docs: {hypo_doc[:50]}...")
             hypo_vector_docs = self.vector_retrieve(hypo_doc, topk)
-            logger.info(f"HyDE - 假设文档向量检索: {len(hypo_vector_docs)} docs")
+            logger.debug(f"HyDE vector retriever: {len(hypo_vector_docs)} docs")
             all_docs.append(hypo_vector_docs)
 
         # 2. HyDE rewrite 检索 (可选)
         if use_hyde_rewrite:
             rewrite_queries = self.hyde_rewrite(query, n=hyde_n, original_query=True)
-            logger.info(f"HyDE rewrite 查询: {rewrite_queries}")
+            logger.debug(f"HyDE rewrite retriever: {rewrite_queries}")
 
             for q in rewrite_queries:
                 vector_docs = self.vector_retrieve(q, topk)
@@ -202,19 +202,21 @@ class HybridSearcher:
         if modes is None:
             modes = {"base"}
 
-        logger.info(f"查询模式: {modes}")
+        logger.debug(f"retrieval modes: {modes}")
         all_retrieval_results = []
 
         # 收集各模式检索结果
         if "base" in modes:
             results = self.base_flow(query, use_web=use_web, topk=topk)
             all_retrieval_results.extend(results)
-            logger.info(f"Base 流程完成，收集 {len(results)} 组检索结果")
+            logger.debug(f"Base process: {len(results)} groups of retrieval results")
 
         if "mqe" in modes:
             results = self.mqe_flow(query, n=mqe_n, topk=topk)
             all_retrieval_results.extend(results)
-            logger.info(f"MQE 流程完成，收集 {len(results)} 组检索结果")
+            logger.debug(
+                f"MQE process completed, collected {len(results)} groups of retrieval results"
+            )
 
         if "hyde" in modes:
             results = self.hyde_flow(
@@ -225,6 +227,8 @@ class HybridSearcher:
                 topk=topk,
             )
             all_retrieval_results.extend(results)
-            logger.info(f"HyDE 流程完成，收集 {len(results)} 组检索结果")
+            logger.debug(
+                f"HyDE process completed, collected {len(results)} groups of retrieval results"
+            )
 
         return all_retrieval_results
