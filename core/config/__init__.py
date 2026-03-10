@@ -8,6 +8,7 @@ from core.config.chat import ChatSettings
 from core.config.sqlite import SQLiteSettings
 from core.config.qdrant import QdrantSettings
 from core.config.tavily import TavilySettings
+from core.config.rerank import RerankSettings
 
 
 class Config(BaseModel):
@@ -19,6 +20,7 @@ class Config(BaseModel):
     tavily: TavilySettings = TavilySettings()
     log: LoggingSettings = LoggingSettings()
     data: DataSettings = DataSettings()
+    rerank: RerankSettings = RerankSettings()
 
 
 def create_embedding(text: str) -> list[float]:
@@ -66,6 +68,7 @@ __all__ = [
     "SQLiteSettings",
     "QdrantSettings",
     "TavilySettings",
+    "RerankSettings",
     "Config",
     "config",
     "EMBED_MODEL",

@@ -3,10 +3,10 @@ import logging
 from typing import List
 from sentence_transformers import CrossEncoder
 from core.models import RetrievalDoc
-from core.config import CHAT_MODEL
+from core.config import CHAT_MODEL, config
 
 logger = logging.getLogger(__name__)
-reranker = CrossEncoder("BAAI/bge-reranker-small")
+reranker = CrossEncoder(config.rerank.model)
 
 
 def extract_score(text: str, default: float = 0.0) -> float:
