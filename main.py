@@ -68,6 +68,10 @@ def process_query(
     docs = reciprocal_rank_fusion(all_retrieval_results, k=rrf_k)
     logger.info(f"RRF 融合后: {len(docs)} 文档")
 
+    # Cut
+    docs = docs[: topk * 2]
+    logger.info(f"Cut 后: {len(docs)} 文档")
+
     # 重排序阶段
     if use_rerank != "none" and docs:
         if use_rerank == "transformers":
@@ -99,12 +103,12 @@ def process_query(
 
 if __name__ == "__main__":
     query = "哪个券商哪个研究员写了顺丰的研报？研报的主要观点是什么？"
-
+    topk = 5
     # 1. 仅 base (with web)
     print("=" * 50)
     print("模式: base (with web)")
     answer = process_query(
-        query, modes={"base"}, use_web=True, use_rerank="transformers"
+        query, modes={"base"}, use_web=True, use_rerank="transformers", topk=topk
     )
     print(f"问题: {query}")
     print(f"答案: {answer}")
@@ -113,7 +117,7 @@ if __name__ == "__main__":
     print("=" * 50)
     print("模式: base (without web)")
     answer = process_query(
-        query, modes={"base"}, use_web=False, use_rerank="transformers"
+        query, modes={"base"}, use_web=False, use_rerank="transformers", topk=topk
     )
     print(f"问题: {query}")
     print(f"答案: {answer}")
@@ -121,14 +125,18 @@ if __name__ == "__main__":
     # 3. base + mqe
     print("=" * 50)
     print("模式: base + mqe")
-    answer = process_query(query, modes={"base", "mqe"}, use_web=True, mqe_n=3)
+    answer = process_query(
+        query, modes={"base", "mqe"}, use_web=True, mqe_n=3, topk=topk
+    )
     print(f"问题: {query}")
     print(f"答案: {answer}")
 
     # 4. base + hyde (完整)
     print("=" * 50)
     print("模式: base + hyde (完整)")
-    answer = process_query(query, modes={"base", "hyde"}, use_web=True, hyde_n=3)
+    answer = process_query(
+        query, modes={"base", "hyde"}, use_web=True, hyde_n=3, topk=topk
+    )
     print(f"问题: {query}")
     print(f"答案: {answer}")
 
@@ -141,6 +149,7 @@ if __name__ == "__main__":
         use_web=True,
         use_hypo_doc=True,
         use_hyde_rewrite=False,
+        topk=topk,
     )
     print(f"问题: {query}")
     print(f"答案: {answer}")
@@ -154,6 +163,7 @@ if __name__ == "__main__":
         use_web=True,
         use_hypo_doc=False,
         use_hyde_rewrite=True,
+        topk=topk,
     )
     print(f"问题: {query}")
     print(f"答案: {answer}")
@@ -162,7 +172,7 @@ if __name__ == "__main__":
     print("=" * 50)
     print("模式: base + mqe + hyde (完整)")
     answer = process_query(
-        query, modes={"base", "mqe", "hyde"}, use_web=True, mqe_n=3, hyde_n=3
+        query, modes={"base", "mqe", "hyde"}, use_web=True, mqe_n=3, hyde_n=3, topk=topk
     )
     print(f"问题: {query}")
     print(f"答案: {answer}")

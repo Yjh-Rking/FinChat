@@ -32,7 +32,7 @@ def generate_hypo_docs(query: str, max_chars: int = 200) -> str:
     """
 
     text = CHAT_MODEL(
-        prompt=user_prompt.format(query=query, max_chars=max_chars),
+        prompt=user_prompt.format(question=query, max_chars=max_chars),
         system_message=system_prompt,
     )
 
