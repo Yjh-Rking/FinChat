@@ -2,8 +2,7 @@ import logging
 from qdrant_client import models
 from core.models import load_markdown, QdrantStore, SQLiteStore
 from core.config import config, EMBED_MODEL
-from core import split_text
-from core.chunking import tiktoken_len
+from core.chunk import split_text, tiktoken_len
 
 logger = logging.getLogger(__name__)
 

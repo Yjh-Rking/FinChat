@@ -1,7 +1,7 @@
 # core/__init__.py
-from .chunking import get_splitter, split_text
+
+from core.rag import process_query
 
 __all__ = [
-    "get_splitter",
-    "split_text",
+    "process_query",
 ]
