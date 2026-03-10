@@ -72,6 +72,39 @@ class SQLiteStore:
         )
         self.conn.commit()
 
+    def get_all_chunks(self, limit: Optional[int] = None) -> list[Chunk]:
+        query = "SELECT * FROM chunks"
+        if limit:
+            query += f" LIMIT {limit}"
+        rows = self.conn.execute(query).fetchall()
+        chunks = []
+        for row in rows:
+            chunks.append(
+                Chunk(
+                    chunk_id=row["chunk_id"],
+                    doc_id=row["doc_id"],
+                    text=row["text"],
+                    metadata=json.loads(row["metadata"]) if row["metadata"] else {},
+                )
+            )
+        return chunks
+
+    def get_random_chunks(self, k: int = 10) -> list[Chunk]:
+        rows = self.conn.execute(
+            "SELECT * FROM chunks ORDER BY RANDOM() LIMIT ?", (k,)
+        ).fetchall()
+        chunks = []
+        for row in rows:
+            chunks.append(
+                Chunk(
+                    chunk_id=row["chunk_id"],
+                    doc_id=row["doc_id"],
+                    text=row["text"],
+                    metadata=json.loads(row["metadata"]) if row["metadata"] else {},
+                )
+            )
+        return chunks
+
     def get_chunk_by_id(self, chunk_id: str) -> Optional[Chunk]:
         row = self.conn.execute(
             "SELECT * FROM chunks WHERE chunk_id = ?", (chunk_id,)
