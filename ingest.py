@@ -41,6 +41,7 @@ if __name__ == "__main__":
                 continue
             valid_chunks.append(c)
         chunks = valid_chunks
+        sqlite_store.insert_chunks(chunks)
 
         # QDdrant store chunks + embeddings
         texts = [c.text for c in chunks]
