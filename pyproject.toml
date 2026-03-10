@@ -13,6 +13,7 @@ dependencies = [
     "rapidfuzz>=3.14.3",
     "requests>=2.32.5",
     "sentence-transformers>=5.2.3",
+    "socksio>=1.0.0",
     "spacy>=3.8.11",
     "tiktoken>=0.12.0",
     "torch>=2.10.0",

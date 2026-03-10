@@ -6,7 +6,7 @@ from core.models import RetrievalDoc
 from core.config import CHAT_MODEL, config
 
 logger = logging.getLogger(__name__)
-reranker = CrossEncoder(config.rerank.model, device="cpu")
+reranker = CrossEncoder(config.rerank.model, device="cpu", max_length=512)
 
 
 def extract_score(text: str, default: float = 0.0) -> float:
