@@ -13,20 +13,21 @@ logger = logging.getLogger(__name__)
 if __name__ == "__main__":
     query = "哪个券商哪个研究员写了顺丰的研报？研报的主要观点是什么？"
     topk = 5
-    # 1. 仅 base (with web)
-    print("=" * 50)
-    print("模式: base (with web)")
-    answer = rag_pipeline(
-        query, modes={"base"}, use_web=True, use_rerank="transformers", topk=topk
-    )
-    print(f"问题: {query}")
-    print(f"答案: {answer}")
 
-    # 2. 仅 base (without web)
+    # 1. 仅 base (without web)
     print("=" * 50)
     print("模式: base (without web)")
     answer = rag_pipeline(
         query, modes={"base"}, use_web=False, use_rerank="transformers", topk=topk
+    )
+    print(f"问题: {query}")
+    print(f"答案: {answer}")
+
+    # 2. 仅 base (with web)
+    print("=" * 50)
+    print("模式: base (with web)")
+    answer = rag_pipeline(
+        query, modes={"base"}, use_web=True, use_rerank="transformers", topk=topk
     )
     print(f"问题: {query}")
     print(f"答案: {answer}")
