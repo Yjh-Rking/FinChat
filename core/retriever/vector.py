@@ -1,5 +1,7 @@
 import logging
-from core.models import RetrievalDoc, SQLiteStore, QdrantStore
+from typing import Optional, Any
+from core.models import RetrievalDoc, SQLiteStore, QdrantStore, Chunk
+from core.config import EMBED_MODEL
 
 logger = logging.getLogger(__name__)
 
@@ -7,6 +9,15 @@ logger = logging.getLogger(__name__)
 class VectorRetriever:
     def __init__(self, sqlite_store: SQLiteStore):
         self.sqlite = sqlite_store
+
+    def retrieve(
+        self, query: str, topk: int = 10, qdrant: Optional[QdrantStore] = None
+    ) -> list[RetrievalDoc]:
+        if qdrant is None:
+            logger.warning("VectorRetriever 需要 qdrant_store 参数")
+            return []
+        embedding = EMBED_MODEL(query)
+        return self.qdrant_retrieve(qdrant, embedding, topk)
 
     def qdrant_retrieve(
         self, qdrant: QdrantStore, q_embedding: list[float], topk: int = 10
