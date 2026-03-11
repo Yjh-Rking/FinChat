@@ -7,7 +7,7 @@ from config import config
 from core.api import chat_model
 
 logger = logging.getLogger(__name__)
-reranker = CrossEncoder(config.rerank.model, device="cpu", max_length=512)
+reranker = CrossEncoder(config.openai.rerank, device="cpu", max_length=512)
 
 
 def extract_score(text: str, default: float = 0.0) -> float:

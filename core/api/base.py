@@ -5,11 +5,11 @@ from config import config
 def embedding_model(text: str) -> list[float]:
     """Create embedding using OpenAI's embeddings API."""
     client = OpenAI(
-        api_key=config.embed.token,
-        base_url="https://api.siliconflow.cn/v1/",
+        api_key=config.openai.embed_api,
+        base_url=config.openai.embed_url,
     )
     response = client.embeddings.create(
-        model=config.embed.model,
+        model=config.openai.embed,
         input=text,
     )
     return response.data[0].embedding
@@ -20,8 +20,8 @@ def chat_model(
 ) -> str:
     """Chat using OpenAI's chat completions API."""
     client = OpenAI(
-        api_key=config.chat.token,
-        base_url=config.chat.url,
+        api_key=config.openai.chat_api,
+        base_url=config.openai.chat_url,
     )
     messages = []
     if system_message:
@@ -29,7 +29,7 @@ def chat_model(
     messages.append({"role": "user", "content": prompt})
 
     response = client.chat.completions.create(
-        model=config.chat.model,
+        model=config.openai.chat,
         messages=messages,
         temperature=0,
         extra_body=extra_body,
