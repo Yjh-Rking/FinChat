@@ -9,4 +9,4 @@ class SQLiteSettings(BaseSettings):
         extra="ignore",
         case_sensitive=False,
     )
-    path: str = "data/rag.db"
+    path: str = "./data/sqlite/rag.db"

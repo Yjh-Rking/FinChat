@@ -9,6 +9,6 @@ class QdrantSettings(BaseSettings):
         extra="ignore",
         case_sensitive=False,
     )
-    path: str = "data/qdrant.db"
+    path: str = "./data/qdrant/qdrant.db"
     url: str = "http://localhost:6333"
     collection: str = "chunks"
