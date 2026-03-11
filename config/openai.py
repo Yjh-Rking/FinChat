@@ -16,4 +16,6 @@ class OpenAISettings(BaseSettings):
     chat_url: str = ""
     chat_api: str = ""
     chat: str = "chat model name"
+    rerank_url: str = ""
+    rerank_api: str = ""
     rerank: str = "rerank model name"

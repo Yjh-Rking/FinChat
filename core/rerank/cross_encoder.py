@@ -1,13 +1,10 @@
 import re
 import logging
 from typing import List
-from sentence_transformers import CrossEncoder
 from core.models import RetrievalDoc
-from config import config
-from core.api import chat_model
+from core.api import chat_model, rerank_model
 
 logger = logging.getLogger(__name__)
-reranker = CrossEncoder(config.openai.rerank, device="cpu", max_length=512)
 
 
 def extract_score(text: str, default: float = 0.0) -> float:
@@ -57,7 +54,7 @@ def transformers_cross_encoder_rerank(
     query: str, docs: List[RetrievalDoc], topk: int = 10
 ) -> List[RetrievalDoc]:
     """
-    使用 BGE Reranker 模型对文档进行重排序
+    使用本地 infinity 服务的 rerank 模型对文档进行重排序
 
     Args:
         query: 用户查询
@@ -70,11 +67,11 @@ def transformers_cross_encoder_rerank(
     if not docs:
         return []
 
-    # 构建 [query, doc] 对
-    query_doc_pairs = [[query, doc.text] for doc in docs]
+    # 提取文档文本
+    documents = [doc.text for doc in docs]
 
-    # 获取相关性分数
-    scores = reranker.predict(query_doc_pairs, show_progress_bar=False)
+    # 调用 rerank_model 获取相关性分数
+    scores = rerank_model(query, documents)
 
     # 将分数赋值给文档
     for doc, score in zip(docs, scores):
