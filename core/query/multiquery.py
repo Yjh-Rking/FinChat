@@ -6,7 +6,7 @@ Multi-Query 查询增强
 
 from typing import List
 from core.api import chat_model
-from core.query import clean_queries
+from core.query.utils import clean_queries
 
 
 def generate_multi_queries(query: str, n: int = 5) -> List[str]:

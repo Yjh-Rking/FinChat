@@ -6,7 +6,7 @@ HyDE (Hypothetical Document Embeddings) 查询增强
 
 from typing import List
 from core.api import chat_model
-from core.query import clean_queries
+from core.query.utils import clean_queries
 
 
 def generate_hypo_docs(query: str, max_chars: int = 200) -> str:
