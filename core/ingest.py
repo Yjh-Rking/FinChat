@@ -16,7 +16,7 @@ def ingestion_pipeline():
     3. 对文档进行分块，并存储分块到 SQLite 中
     4. 生成分块的向量表示，并存储到 Qdrant 中
     """
-    docs = load_markdown(config.data.path)
+    docs = load_markdown(config.data_dir + "md/")
     logger.info(f"Loaded {len(docs)} docs")
 
     # SQLite insert (Documents + Chunks)
