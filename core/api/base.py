@@ -36,12 +36,12 @@ def rerank_model(query: str, documents: list[str]) -> list[float]:
     response.raise_for_status()
 
     result = response.json()
-    print(result)
+
     # 返回按原始顺序排列的分数
     scores = [0.0] * len(documents)
     for item in result.get("results", []):
         idx = item.get("index", 0)
-        score = item.get("score", 0.0)
+        score = item.get("relevance_score", 0.0)
         scores[idx] = score
 
     return scores
