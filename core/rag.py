@@ -23,6 +23,7 @@ def rag_pipeline(
     use_hyde_rewrite: bool = True,
     rrf_k: int = 60,
     return_contexts: bool = False,
+    max_context_length: Optional[int] = None,
 ) -> Union[str, Tuple[str, List[str]]]:
     """
     处理查询的统一入口
@@ -39,6 +40,7 @@ def rag_pipeline(
         use_hyde_rewrite: 是否使用 hyde rewrite 检索 (仅 hyde 模式有效)
         rrf_k: RRF 融合参数
         return_contexts: 是否返回检索到的上下文列表
+        max_context_length: 上下文最大字符数，None 表示不限制
 
     Returns:
         如果 return_contexts=False: LLM 生成的答案 (str)
@@ -75,6 +77,18 @@ def rag_pipeline(
 
     # 获取上下文文本列表
     contexts = [doc.text for doc in docs]
+
+    # 限制上下文长度
+    if max_context_length is not None and contexts:
+        truncated_contexts = []
+        total_length = 0
+        for ctx in contexts:
+            if total_length + len(ctx) + 2 <= max_context_length:
+                truncated_contexts.append(ctx)
+                total_length += len(ctx) + 2  # +2 for "\n\n"
+            else:
+                break
+        contexts = truncated_contexts
 
     # LLM 生成答案
     if contexts:
