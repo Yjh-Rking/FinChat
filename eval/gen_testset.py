@@ -98,7 +98,7 @@ def generate_test_dataset(
                 question = result.get("question", "")
                 ground_truth = result.get("ground_truth", "")
             except Exception as e:
-                print(f"LLM生成失败，使用chunk前100字作为ground_truth: {e}")
+                print(f"LLM generate fail: {response}\n use chunk be ground_truth: {e}")
                 question = f"关于{chunk.doc_id}的内容，请总结主要观点"
                 ground_truth = context[:200]
         else:

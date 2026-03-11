@@ -55,3 +55,7 @@ def ingestion_pipeline():
         embeddings = [embedding_model(text) for text in texts]
         qdrant_store.upsert_chunks(chunks, embeddings)
         logger.info(f"Split into {len(chunks)} chunks")
+
+
+if __name__ == "__main__":
+    ingestion_pipeline()

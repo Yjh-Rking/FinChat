@@ -112,7 +112,7 @@ def run_rag_eval(
     logger.info(f"模式 {mode_name} 评估完成")
     return {
         "mode": mode_name,
-        "scores": result.scores,
+        "scores": result.scores,  # type: ignore
         "details": result.to_pandas().to_dict("records"),  # type: ignore
     }
 
