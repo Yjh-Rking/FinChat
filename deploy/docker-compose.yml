@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  qdrant:
+    image: docker.io/qdrant/qdrant:latest
+    container_name: qdrant_server
+    ports:
+      - "6333:6333"
+    volumes:
+      - ./data/qdrant:/qdrant/storage
+  
+  infinity:
+    image: docker.io/michaelf34/infinity:latest-cpu
+    container_name: infinity-bce-cpu
+    network_mode: "host"
+
+    command:
+      - v2
+      - --engine
+      - optimum
+      - --model-id
+      - maidalun1020/bce-embedding-base_v1
+      - --model-id
+      - maidalun1020/bce-reranker-base_v1
+      - --port
+      - "7997"
+    volumes:
+      - ./data/infinity:/app/.cache
+    environment:
+      - OMP_NUM_THREADS=2
+      - TORCH_NUM_THREADS=2
