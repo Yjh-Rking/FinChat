@@ -13,7 +13,6 @@ dependencies = [
     "rank-bm25>=0.2.2",
     "requests>=2.32.5",
     "sentence-transformers>=5.2.3",
-    "socksio>=1.0.0",
     "tiktoken>=0.12.0",
 ]
 
