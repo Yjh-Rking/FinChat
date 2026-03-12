@@ -33,7 +33,7 @@ class MyEmbeddings(BaseRagasEmbeddings):
 
 
 llm = llm_factory(
-    config.openai.chat,
+    config.openai.chat_model,
     client=OpenAI(api_key=config.openai.chat_api, base_url=config.openai.chat_url),
     extra_body={
         "reasoning_split": True,

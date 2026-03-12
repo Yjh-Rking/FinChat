@@ -27,7 +27,7 @@ def rerank_model(query: str, documents: list[str]) -> list[float]:
     payload = {
         "query": query,
         "documents": documents,
-        "model": config.openai.rerank,
+        "model": config.openai.rerank_model,
     }
 
     response = requests.post(
@@ -54,7 +54,7 @@ def embedding_model(text: str) -> list[float]:
         base_url=config.openai.embed_url,
     )
     response = client.embeddings.create(
-        model=config.openai.embed,
+        model=config.openai.embed_model,
         input=text,
     )
     return response.data[0].embedding
@@ -74,7 +74,7 @@ def chat_model(
     messages.append({"role": "user", "content": prompt})
 
     response = client.chat.completions.create(
-        model=config.openai.chat,
+        model=config.openai.chat_model,
         messages=messages,
         temperature=0,
         extra_body=extra_body,

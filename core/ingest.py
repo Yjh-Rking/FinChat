@@ -26,7 +26,9 @@ def ingestion_pipeline():
     qdrant_store = QdrantStore(
         url=config.qdrant.url, collection=config.qdrant.collection
     )
-    qdrant_store.init_collection(vector_size=1024, distance=models.Distance.COSINE)
+    qdrant_store.init_collection(
+        vector_size=config.openai.embed_size, distance=models.Distance.COSINE
+    )
 
     for doc, text in docs:
         # SQLite store documents

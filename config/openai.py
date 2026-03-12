@@ -12,10 +12,11 @@ class OpenAISettings(BaseSettings):
 
     embed_url: str = ""
     embed_api: str = ""
-    embed: str = "embed model name"
+    embed_model: str = "embed model name"
+    embed_size: int = 1024
     chat_url: str = ""
     chat_api: str = ""
-    chat: str = "chat model name"
+    chat_model: str = "chat model name"
     rerank_url: str = ""
     rerank_api: str = ""
-    rerank: str = "rerank model name"
+    rerank_model: str = "rerank model name"
