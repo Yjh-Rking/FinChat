@@ -112,5 +112,6 @@ python -m eval.run_eval
                   3. base + mqe       0.8125           0.4571            0.7917         0.8750
             4. base + hyde (完整)       0.9167           0.4976            0.7917         0.8750
     5. base + hyde (仅 hypo_doc)       0.6875           0.5584            0.7917         0.8750
-6. base + hyde (仅 hyde_rewrite)       0.8125           0.4455            0.7500         0.7500
-      7. base + mqe + hyde (完整)       0.8125           0.4881            0.8542         0.8750
+    6. base + hyde (仅 hyde_rewrite)       0.8125           0.4455            0.7500         0.7500
+    7. base + mqe + hyde (完整)       0.8125           0.4881            0.8542         0.8750
+      
