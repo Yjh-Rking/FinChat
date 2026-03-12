@@ -8,6 +8,7 @@ import json
 import logging
 from typing import List, Dict, Any
 
+import pandas as pd
 from openai import OpenAI
 from datasets import Dataset
 from ragas import evaluate
@@ -226,6 +227,43 @@ def main():
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(all_results, f, ensure_ascii=False, indent=2, default=str)
     logger.info(f"\n详细结果已保存到 {output_path}")
+
+    # 生成汇总表格
+    table_data = []
+    for result in all_results:
+        if "error" in result:
+            table_data.append(
+                {
+                    "模式": result["mode"],
+                    "faithfulness": "ERROR",
+                    "answer_relevancy": "ERROR",
+                    "context_precision": "ERROR",
+                    "context_recall": "ERROR",
+                }
+            )
+        else:
+            scores = result["scores"][0]
+            table_data.append(
+                {
+                    "模式": result["mode"],
+                    "faithfulness": f"{scores['faithfulness']:.4f}",
+                    "answer_relevancy": f"{scores['answer_relevancy']:.4f}",
+                    "context_precision": f"{scores['context_precision']:.4f}",
+                    "context_recall": f"{scores['context_recall']:.4f}",
+                }
+            )
+
+    # 创建 DataFrame 并保存为 CSV
+    df = pd.DataFrame(table_data)
+    csv_path = "eval_results.csv"
+    df.to_csv(csv_path, index=False, encoding="utf-8-sig")
+    logger.info(f"汇总表格已保存到 {csv_path}")
+
+    # 打印表格
+    logger.info("\n" + "=" * 80)
+    logger.info("评估结果汇总表格")
+    logger.info("=" * 80)
+    print("\n" + df.to_string(index=False))
 
 
 if __name__ == "__main__":

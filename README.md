@@ -28,6 +28,7 @@ python -m core.ingest
 python main.py
 
 # 运行评估
+python -m eval.gen_testset
 python -m eval.run_eval
 ```
 
