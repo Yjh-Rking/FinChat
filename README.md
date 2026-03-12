@@ -5,14 +5,13 @@
 ## 快速开始
 
 ### 1. 环境配置
-
+**CHANGE YOU LLM API**
 ```bash
 # 安装依赖
 uv sync
 
 # 配置文件
 cp .env.example .env
-**change llm api**
 
 # 启动qdrant和Infinity（本地embedding+rerank模型）
 cd deploy
@@ -20,9 +19,8 @@ docker-compose up -d
 ```
 
 ### 2. 运行RAG
-
+**Put you markdown file to ./data/md/**
 ```bash
-**put you markdown file to ./data/md/**
 # 数据提取
 python -m core.ingest
 
