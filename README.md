@@ -102,3 +102,15 @@ python -m eval.run_eval
 | `data/qdrant/` | Qdrant 持久化存储 |
 | `data/infinity/` | Infinity 本地模型缓存 |
 | `logs/` | 日志文件 |
+
+## Eval-Result
+2026-03-12 11:56:27,097 - __main__ - INFO - ================================================================================
+
+                             模式 faithfulness answer_relevancy context_precision context_recall
+          1. base (without web)       0.8125           0.5353            1.0000         1.0000
+             2. base (with web)       0.9167           0.4882            0.8750         0.8750
+                  3. base + mqe       0.8125           0.4571            0.7917         0.8750
+            4. base + hyde (完整)       0.9167           0.4976            0.7917         0.8750
+    5. base + hyde (仅 hypo_doc)       0.6875           0.5584            0.7917         0.8750
+6. base + hyde (仅 hyde_rewrite)       0.8125           0.4455            0.7500         0.7500
+      7. base + mqe + hyde (完整)       0.8125           0.4881            0.8542         0.8750

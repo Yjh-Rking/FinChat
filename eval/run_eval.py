@@ -215,12 +215,19 @@ def main():
         if "error" in result:
             logger.info(f"{result['mode']}: ERROR - {result['error']}")
         else:
-            scores = result["scores"][0]  # scores 是一个列表，取第一个元素
+            details = result["details"]
+            df = pd.DataFrame(details)
+            mean_scores = {
+                "faithfulness": df["faithfulness"].mean(),
+                "answer_relevancy": df["answer_relevancy"].mean(),
+                "context_precision": df["context_precision"].mean(),
+                "context_recall": df["context_recall"].mean(),
+            }
             logger.info(f"{result['mode']}:")
-            logger.info(f"  faithfulness: {scores['faithfulness']:.4f}")
-            logger.info(f"  answer_relevancy: {scores['answer_relevancy']:.4f}")
-            logger.info(f"  context_precision: {scores['context_precision']:.4f}")
-            logger.info(f"  context_recall: {scores['context_recall']:.4f}")
+            logger.info(f"  faithfulness: {mean_scores['faithfulness']:.4f}")
+            logger.info(f"  answer_relevancy: {mean_scores['answer_relevancy']:.4f}")
+            logger.info(f"  context_precision: {mean_scores['context_precision']:.4f}")
+            logger.info(f"  context_recall: {mean_scores['context_recall']:.4f}")
 
     # 保存详细结果到文件
     output_path = "eval_results.json"
@@ -242,14 +249,22 @@ def main():
                 }
             )
         else:
-            scores = result["scores"][0]
+            # 计算各指标的均值
+            details = result["details"]
+            df = pd.DataFrame(details)
+            mean_scores = {
+                "faithfulness": df["faithfulness"].mean(),
+                "answer_relevancy": df["answer_relevancy"].mean(),
+                "context_precision": df["context_precision"].mean(),
+                "context_recall": df["context_recall"].mean(),
+            }
             table_data.append(
                 {
                     "模式": result["mode"],
-                    "faithfulness": f"{scores['faithfulness']:.4f}",
-                    "answer_relevancy": f"{scores['answer_relevancy']:.4f}",
-                    "context_precision": f"{scores['context_precision']:.4f}",
-                    "context_recall": f"{scores['context_recall']:.4f}",
+                    "faithfulness": f"{mean_scores['faithfulness']:.4f}",
+                    "answer_relevancy": f"{mean_scores['answer_relevancy']:.4f}",
+                    "context_precision": f"{mean_scores['context_precision']:.4f}",
+                    "context_recall": f"{mean_scores['context_recall']:.4f}",
                 }
             )
 
